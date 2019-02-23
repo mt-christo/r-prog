@@ -1,0 +1,30 @@
+source('R12.R')
+plot_res = function(p,f,i){
+  x0 = get(load(f))[[1]]
+  x = x0$ts
+  png(paste(p,i,'.png',sep=''))
+  hist(x,br=seq(-1000,1000,by=0.02),xlim=c(-5,5))
+  #hist(x)
+  dev.off()
+  x0
+}
+
+#t1 = plot_res('res0','RData/res_5_NONCLUSTER-50000-50-0.4-3-0.999-0.2.RData',4)
+#t2 = plot_res('res0','RData/res_5_NONCLUSTER-50000-50-0.4-3-0.999-0.3.RData',5)
+#t3 = plot_res('res0','RData/res_5_NONCLUSTER-50000-50-0.4-3-0.999-0.4.RData',6)
+
+params1 = list(100,0.4,as.list(2:14),0.999,as.list(0.02*1:30))
+p1 = 2:14; p2 = 0.02*1:30
+for(i1 in p1) for(i2 in p2) 
+  print(plot_res(paste('pics/res-',i1,'-',i2,'-',sep=''),paste('RData/res_5_NONCLUSTER-150000-100-0.4-',i1,'-0.999-',i2,'.RData',sep=''),0)$params)
+
+system('git add res*.png')
+system('git add pics/res*.png')
+system('git commit res*.png -m "a"')
+system('git commit pics/res*.png -m "a"')
+system('git push')
+
+#print(t1$params)
+#print(t2$params)
+#print(t3$params)
+
